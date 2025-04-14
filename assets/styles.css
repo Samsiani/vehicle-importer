@@ -1,0 +1,29 @@
+#vehicle-import-ui {
+    max-width: 800px;
+    background: #f9f9f9;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  
+  #vehicle-import-ui h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  
+  #vehicle-import-ui pre {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    border-radius: 4px;
+  }
+  
+  #vehicle-import-ui button.button {
+    font-size: 15px;
+    padding: 8px 20px;
+  }
+  
