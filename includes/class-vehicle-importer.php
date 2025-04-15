@@ -83,6 +83,8 @@ class Vehicle_Importer {
         $vin = sanitize_text_field( $vehicle['vin'] ?? '' );
         if ( ! $vin ) return;
 
+        self::log("🧾 VEHICLE KEYS: " . implode(', ', array_keys($vehicle)));
+
         $existing = new WP_Query([
             'post_type' => 'product',
             'posts_per_page' => 1,
@@ -113,29 +115,58 @@ class Vehicle_Importer {
         }
 
         $map = [
-            'make' => 'Make', 'model' => 'Model', 'year' => 'Year', 'color' => 'Color',
-            'lot_number' => 'Lot Number', 'is_key_present' => 'Key',
-            'date_of_pickup' => 'Pickup Date', 'deliver_date' => 'Delivery Date',
-            'container_number' => 'Container Number', 'loading_date' => 'Loading Date',
-            'booking_number' => 'Booking Number', 'departure_date' => 'Departure Date',
+            'make' => 'Make',
+            'model' => 'Model',
+            'year' => 'Year',
+            'color' => 'Color',
+            'lot_number' => 'Lot Number',
+            'is_key_present' => 'Key',
+            'date_of_pickup' => 'Pickup Date',
+            'deliver_date' => 'Delivery Date',
+            'container_number' => 'Container Number',
+            'loading_date' => 'Loading Date',
+            'booking_number' => 'Booking Number',
+            'departure_date' => 'Departure Date',
             'arival_date' => 'Arrival Date'
         ];
 
         $attributes = [];
+
         foreach ( $map as $key => $label ) {
             if ( ! empty( $vehicle[$key] ) ) {
                 $value = $key === 'is_key_present' ? ( $vehicle[$key] ? 'Yes' : 'No' ) : $vehicle[$key];
                 $attributes[ sanitize_title( $label ) ] = [
-                    'name' => wc_clean( $label ),
-                    'value' => wc_clean( $value ),
-                    'position' => 0,
-                    'is_visible' => 1,
+                    'name'         => wc_clean( $label ),
+                    'value'        => wc_clean( $value ),
+                    'position'     => 0,
+                    'is_visible'   => 1,
                     'is_variation' => 0,
-                    'is_taxonomy' => 0
+                    'is_taxonomy'  => 0
                 ];
             }
         }
+
+        // ✅ TRACKING LINK as post_meta AND optional attribute
+        $tracking_link = !empty($vehicle['tracking_link']) ? $vehicle['tracking_link'] : (!empty($vehicle['trackingLink']) ? $vehicle['trackingLink'] : null);
+        $shipline_name = $vehicle['shipline_name'] ?? $vehicle['shiplineName'] ?? 'Link';
+
+        if ( $tracking_link ) {
+            update_post_meta( $post_id, '_tracking_link_url', esc_url_raw( $tracking_link ) );
+            update_post_meta( $post_id, '_tracking_link_label', sanitize_text_field( $shipline_name ) );
+
+            $html = '<a href="' . esc_url( $tracking_link ) . '" target="_blank" rel="noopener noreferrer">' . esc_html( $shipline_name ) . '</a>';
+            $attributes['tracking-link'] = [
+                'name'         => 'Tracking Link',
+                'value'        => $html,
+                'position'     => 99,
+                'is_visible'   => 1,
+                'is_variation' => 0,
+                'is_taxonomy'  => 0
+            ];
+        }
+
         update_post_meta( $post_id, '_product_attributes', $attributes );
+        self::log("🔍 FINAL ATTRIBUTES: " . print_r($attributes, true));
 
         require_once ABSPATH . 'wp-admin/includes/media.php';
         require_once ABSPATH . 'wp-admin/includes/file.php';

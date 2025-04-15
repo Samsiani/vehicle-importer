@@ -26,38 +26,3 @@
   font-size: 15px;
   padding: 8px 20px;
 }
-
-#vehicle-importer-app .top-section button {
-  margin-left: 10px;
-}
-
-#vehicle-importer-app .batch-size-section select {
-  margin-left: 10px;
-}
-
-#vehicle-importer-app .manual-import-section input {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-#vehicle-importer-app .message-section {
-  margin-top: 1em;
-}
-
-#vehicle-importer-app .status-section {
-  margin-top: 2em;
-}
-
-#vehicle-importer-app .log-section pre {
-  max-height: 300px;
-  overflow: auto;
-}
-
-#vehicle-importer-app .vehicles-section input {
-  margin-bottom: 10px;
-  max-width: 400px;
-}
-
-#vehicle-importer-app .pagination-section {
-  margin-top: 2em;
-}

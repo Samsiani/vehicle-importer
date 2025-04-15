@@ -20,7 +20,7 @@ add_action( 'admin_menu', function() {
  */
 function vehicle_importer_render_admin_page() {
     echo '<div class="wrap">';
-    echo '<h1>🚗 Vehicle Importer</h1>';
+    echo '<h1>ðŸš— Vehicle Importer</h1>';
     echo '<div id="vehicle-import-ui"></div>'; // React app mounts here
     echo '</div>';
 }
